@@ -1,10 +1,16 @@
+Photo by <a href="https://unsplash.com/@csolorzanoe?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Charlie Solorzano</a> on <a href="https://unsplash.com/s/photos/popcorn-bag?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+
+Photo by <a href="https://unsplash.com/@grstocks?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">GR Stocks</a> on <a href="https://unsplash.com/s/photos/cinema?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+
 # Project 2 - Movie Browser
+
 For this project, you'll be implementing a movie browser. It will allow users to
 search for movies included in the [Open Movie Database](http://www.omdbapi.com/)
 and view additional information about any movies they select. Check out the
 [staff solution](#staff-solution) for a working version.
 
 ## Requirements
+
 - You may not import libraries other than the below:
   - `expo`
   - `react`
@@ -20,9 +26,11 @@ and view additional information about any movies they select. Check out the
 The aesthetics of the app are up to you!
 
 ### Challenge (Not Required)
+
 - Coming soon!
 
 ## Getting Started
+
 First, head to [this link](https://docs.expo.io/versions/latest/get-started/installation/)
 to install Expo. You'll need the XDE for your computer and the mobile client
 (Expo app) on your phone. If you prefer, you can also install the iOS simulator
@@ -65,5 +73,6 @@ you can use the mock data defined in [`mockData.js`](./mockData.js).
 Good luck!
 
 ## Staff Solution
+
 If you want to play with the staff implementation, you can view it using
 Snack at [@jhhayashi/project2-solution](https://snack.expo.io/@jhhayashi/project2-solution).
