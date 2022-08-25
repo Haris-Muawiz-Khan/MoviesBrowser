@@ -1,25 +1,37 @@
-import { View, ScrollView, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { search } from '../mockData'
 import MovieCard from './MovieCard'
 import { Icon } from 'react-native-elements'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { REACT_APP_API_KEY_2 } from './apiKeys'
 
 export default function HomeScreen({navigation}) {
+  const [loadMovies, setLoadMovies] = useState([])
+  let moviesData = []
 
-  const movieCard = search.Search.map(item => {
-    return (
-      <MovieCard
-      key={item.imdbID}
-      id={item.imdbID}
-      title={item.Title}
-      poster={item.Poster}
-      releaseDate={item.Year}
-      type={item.Type}
-      navigation={navigation}
-      />
-    )
-  })
+  useEffect(() => {
+    fetch(`https://imdb-api.com/en/API/MostPopularMovies/${REACT_APP_API_KEY_2}`)
+      .then(res => res.json())
+      .then(data => setLoadMovies(()=> data.items))
+      .catch(err => console.log(err))
+  }, [])
+  
+  if (loadMovies.length>0){
+    moviesData = (item) => {
+      return (
+        <MovieCard
+        ey={item.item.id}
+        id={item.item.id}
+        title={item.item.title}
+        poster={item.item.image}
+        releaseDate={item.item.year}
+        type={'movie'}
+        navigation={navigation}
+        />
+      )
+    }
+  }
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.header}>
@@ -33,11 +45,11 @@ export default function HomeScreen({navigation}) {
           <Icon name="search" />
         </TouchableOpacity>
       </View>
-      <ScrollView>
-        <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-          {movieCard}
-        </View>
-      </ScrollView>
+      {loadMovies.length>0 ? <FlatList
+      data={loadMovies}
+      renderItem={moviesData}
+      numColumns={2}
+      />: <></>}
     </SafeAreaView>
   )
 }

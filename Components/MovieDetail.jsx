@@ -3,35 +3,80 @@ import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Icon } from 'react-native-elements'
 import { useRoute } from '@react-navigation/native'
-import { movie } from '../mockData'
+import { useState, useEffect } from 'react'
+import { REACT_APP_API_KEY } from './apiKeys'
+// import { REACT_APP_API_KEY_2 } from './apiKeys'
+// import Video from 'react-native-video';
+
 
 const MovieDetail = ({navigation}) => {
   const route = useRoute()
-  const ratings = movie.Ratings.map(item => {
-    return(
-      <View style={{flexDirection: 'row'}}>
-        <Text style={{ marginRight: 5, fontWeight: 'bold'}}>
-          {item.Source}
-        </Text>
-        <Text>
-          {item.Value}
-        </Text>
-      </View>
-    )
-  })
-  
+  const [dataReq, setDataReq] = useState([])
+  const [trailerUrl, setTrailerUrl] = useState('')
+  let ratings = []
+  let dataHandler = route.params.id ? dataReq : route.params
+
+  useEffect(()=> {
+    if (route.params.id){
+      fetch(`http://www.omdbapi.com/?i=${route.params.id}&plot=full&apikey=${REACT_APP_API_KEY}`)
+      .then(res => res.json())
+      .then(data => setDataReq(data))
+      .catch(err => console.log(err))
+    }
+    // fetch(`https://imdb-api.com/en/API/Trailer/${REACT_APP_API_KEY_2}/${route.params.id ? route.params.id : dataReq.imdbID}`)
+    // .then(res => res.json())
+    // .then(data => setTrailerUrl(data.link))
+    // .catch(err => console.log(err))
+  }, [route.params])
+
+  if (route.params.id){
+    ratings = dataReq.Ratings?.map(item => {
+      return(
+        <View style={{flexDirection: 'row'}} key={item.Source}>
+          <Text style={{ marginRight: 5, fontWeight: 'bold'}}>
+            {item.Source}
+          </Text>
+          <Text>
+            {item.Value}
+          </Text>
+        </View>
+      )
+    })
+  } else{
+    ratings = route.params.Ratings.map(item => {
+      return(
+        <View style={{flexDirection: 'row'}} key={item.Source}>
+          <Text style={{ marginRight: 5, fontWeight: 'bold'}}>
+            {item.Source}
+          </Text>
+          <Text>
+            {item.Value}
+          </Text>
+        </View>
+      )
+    })
+  }
+
   return (
     <SafeAreaView style={{flex: 1, alignItems: 'flex-start'}}>
       <View style={styles.header}>
         <TouchableOpacity
-          onPress={()=>navigation.navigate('Home')}
-          style={styles.homeIcon}
+          onPress={()=>route.params.id ? navigation.navigate('Home') : navigation.navigate('search')}
+          style={styles.backIcon}
         >
-          <Icon name='home' />
+          <Icon
+          name='angle-left'
+          type='font-awesome'/>
         </TouchableOpacity>
         <Text style={styles.title}>
           Details
         </Text>
+        {!route.params.id && <TouchableOpacity
+          onPress={()=>navigation.navigate('Home')}
+          style={styles.homeIcon}
+        >
+          <Icon name='home' />
+        </TouchableOpacity>}
       </View>
 
       <ScrollView style={styles.movieDetailContainer}>
@@ -39,13 +84,22 @@ const MovieDetail = ({navigation}) => {
           <Image
               style={styles.poster}
               source={{
-              uri: movie.Poster,
+              uri: dataHandler.Poster,
               }}
             />
+            {/* console.log(trailerUrl)
+            <Video source={{uri: trailerUrl}}   // Can be a URL or a local file.
+              ref={(ref) => {
+                player = ref
+              }}                                      // Store reference
+              onBuffer={onBuffer}                // Callback when remote video is buffering
+              onError={videoError}               // Callback when video cannot be loaded
+              style={backgroundVideo}
+            /> */}
         </View>
         <View>
           <Text style={styles.movieTitle}>
-            {movie.Title}
+            {dataHandler.Title}
           </Text>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -54,7 +108,7 @@ const MovieDetail = ({navigation}) => {
               Release Date:
             </Text>
             <Text>
-              {movie.Released}
+              {dataHandler.Released}
             </Text>
           </View>
           <View style={{flexDirection: 'row',}}>
@@ -62,7 +116,7 @@ const MovieDetail = ({navigation}) => {
               Run time:
             </Text>
             <Text>
-              {movie.Runtime}
+              {dataHandler.Runtime}
             </Text>
           </View>
         </View>
@@ -72,7 +126,7 @@ const MovieDetail = ({navigation}) => {
               Rated:
             </Text>
             <Text>
-              {movie.Rated}
+              {dataHandler.Rated}
             </Text>
           </View>
           <View style={{flexDirection: 'row',}}>
@@ -80,7 +134,7 @@ const MovieDetail = ({navigation}) => {
               Genre:
             </Text>
             <Text>
-              {movie.Genre}
+              {dataHandler.Genre}
             </Text>
           </View>
         </View>
@@ -90,7 +144,7 @@ const MovieDetail = ({navigation}) => {
               Director:
             </Text>
             <Text>
-              {movie.Director}
+              {dataHandler.Director}
             </Text>
           </View>
           <View style={{flexDirection: 'row',}}>
@@ -98,7 +152,7 @@ const MovieDetail = ({navigation}) => {
               Write:
             </Text>
             <Text>
-              {movie.Writer}
+              {dataHandler.Writer}
             </Text>
           </View>
         </View>
@@ -107,7 +161,7 @@ const MovieDetail = ({navigation}) => {
             Actors:
           </Text>
           <Text>
-            {movie.Actors}
+            {dataHandler.Actors}
           </Text>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap'}}>
@@ -115,7 +169,7 @@ const MovieDetail = ({navigation}) => {
             Plot:
           </Text>
           <Text>
-              {movie.Plot}
+              {dataHandler.Plot}
           </Text>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -124,7 +178,7 @@ const MovieDetail = ({navigation}) => {
               Language:
             </Text>
             <Text>
-              {movie.Language}
+              {dataHandler.Language}
             </Text>
           </View>
           <View style={{flexDirection: 'row',}}>
@@ -132,7 +186,7 @@ const MovieDetail = ({navigation}) => {
               Country:
             </Text>
             <Text>
-              {movie.Country}
+              {dataHandler.Country}
             </Text>
           </View>
         </View>
@@ -141,7 +195,7 @@ const MovieDetail = ({navigation}) => {
             Awards:
           </Text>
           <Text>
-              {movie.Awards}
+              {dataHandler.Awards}
           </Text>
         </View>
         <View>
@@ -153,7 +207,7 @@ const MovieDetail = ({navigation}) => {
             Meta score:
           </Text>
           <Text>
-            {movie.Metascore}
+            {dataHandler.Metascore}
           </Text>
         </View>
         <View style={{flexDirection: 'row'}}>
@@ -161,7 +215,7 @@ const MovieDetail = ({navigation}) => {
             IMDB Rating:
           </Text>
           <Text>
-            {movie.imdbRating}
+            {dataHandler.imdbRating}
           </Text>
         </View>
         <View style={{flexDirection: 'row'}}>
@@ -169,7 +223,7 @@ const MovieDetail = ({navigation}) => {
             IMDB Votes:
           </Text>
           <Text>
-            {movie.imdbVotes}
+            {dataHandler.imdbVotes}
           </Text>
         </View>
         <View style={{flexDirection: 'row'}}>
@@ -177,7 +231,7 @@ const MovieDetail = ({navigation}) => {
             Type:
           </Text>
           <Text>
-            {movie.Type}
+            {dataHandler.Type}
           </Text>
         </View>
         <View style={{flexDirection: 'row'}}>
@@ -185,7 +239,7 @@ const MovieDetail = ({navigation}) => {
             Production:
           </Text>
           <Text>
-            {movie.Production}
+            {dataHandler.Production}
           </Text>
         </View>
         <View style={{flexDirection: 'row'}}>
@@ -193,7 +247,7 @@ const MovieDetail = ({navigation}) => {
             DVD:
           </Text>
           <Text>
-            {movie.DVD}
+            {dataHandler.DVD}
           </Text>
         </View>
         <View style={{flexDirection: 'row'}}>
@@ -201,7 +255,7 @@ const MovieDetail = ({navigation}) => {
             Box Office:
           </Text>
           <Text>
-            {movie.BoxOffice}
+            {dataHandler.BoxOffice}
           </Text>
         </View>
         <View style={{flexDirection: 'row', marginBottom: 15}}>
@@ -209,7 +263,7 @@ const MovieDetail = ({navigation}) => {
             Website:
           </Text>
           <Text>
-            {movie.Website}
+            {dataHandler.Website}
           </Text>
         </View>
       </ScrollView>
@@ -243,9 +297,28 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto',
     textTransform: 'uppercase'
   },
-  homeIcon: {
+  backIcon: {
     position: 'absolute',
     left: 0,
+    width: 35,
+    height: 35,
+    borderRadius: 5,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 5,
+      height: 5,
+    },
+    shadowOpacity: 0.36,
+    shadowRadius: 6.68,
+    elevation: 5,
+    margin: 5,
+  },
+  homeIcon: {
+    position: 'absolute',
+    right: 0,
     width: 35,
     height: 35,
     borderRadius: 5,

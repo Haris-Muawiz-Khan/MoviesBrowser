@@ -2,9 +2,10 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 
 export default function MovieCard(props) {
+    const params = props.movieData ? props.movieData : {id: props.id}
   return (
     <TouchableOpacity
-    onPress={()=> props.navigation.navigate('Details', {id: props.id})}
+    onPress={()=> props.navigation.navigate('Details', params)}
     >
         <View style={styles.container}>
             <View style={styles.logoContainer}>

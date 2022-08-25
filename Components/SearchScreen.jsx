@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import React from 'react'
 import MovieCard from './MovieCard'
 import { Icon } from 'react-native-elements'
+import { REACT_APP_API_KEY } from './apiKeys'
 
 const SearchScreen = ({navigation}) => {
     const [movieTitle, setMovieTitle] = useState('')
@@ -15,11 +16,9 @@ const SearchScreen = ({navigation}) => {
     useEffect(() => {
         if (movieTitle) {
             const movieTitleArray = `t=${movieTitle.split(' ').join('+')}&`
-            fetch(`http://www.omdbapi.com/?${movieTitleArray}${year?? 'y='+year}&apikey=a664ba2a`)
+            fetch(`http://www.omdbapi.com/?${movieTitleArray}${year?? 'y='+year}&apikey=${REACT_APP_API_KEY}`)
             .then(res => res.json())
-            .then(data => {
-                setSearchResults(()=> data)
-            })
+            .then(data => setSearchResults(()=> data))
             .catch(err => console.log(err))
         }
     }, [search])
@@ -69,6 +68,7 @@ const SearchScreen = ({navigation}) => {
             {
                 searchResults ?
                 <MovieCard
+                    movieData={searchResults}
                     key={searchResults.imdbID}
                     id={searchResults.imdbID}
                     title={searchResults.Title}
