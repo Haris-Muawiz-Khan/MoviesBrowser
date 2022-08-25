@@ -86,7 +86,8 @@ export const movie = {
     "Writer": "George Lucas",
     "Actors": "Mark Hamill, Harrison Ford, Carrie Fisher, Peter Cushing",
     "Plot": "Luke Skywalker joins forces with a Jedi Knight, a cocky pilot, a Wookiee and two droids to save the galaxy from the Empire's world-destroying battle-station while also attempting to rescue Princess Leia from the evil Darth Vader.",
-    "Language": "English", "Country": "USA",
+    "Language": "English",
+    "Country": "USA",
     "Awards": "Won 6 Oscars. Another 50 wins & 28 nominations.",
     "Poster": "https://m.media-amazon.com/images/I/71PA-nPMvdL._AC_SL1000_.jpg",
     "Ratings": [

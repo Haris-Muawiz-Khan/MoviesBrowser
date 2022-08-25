@@ -4,25 +4,25 @@ import React from 'react'
 export default function MovieCard(props) {
   return (
     <TouchableOpacity
-    onPress={()=> props.navigation.navigate('Details')}
+    onPress={()=> props.navigation.navigate('Details', {id: props.id})}
     >
         <View style={styles.container}>
             <View style={styles.logoContainer}>
-            <Image
-                style={styles.logo}
-                source={{
-                uri: props.poster,
-                }}
-            />
+                <Image
+                    style={styles.logo}
+                    source={{
+                    uri: props.poster,
+                    }}
+                />
             </View>
             <View>
                 <Text
-                style={{fontSize: 14, fontWeight: 'bold', width: 150}}
+                style={{fontSize: 14, fontWeight: 'bold', width: 150, textAlign: 'center'}}
                 >
                     {props.title}
                 </Text>
             </View>
-            <View style={{flexDirection: 'row', paddingRight: 55}}>
+            <View style={{flexDirection: 'row'}}>
                 <Text style={{color: 'gray', marginLeft: 0}}>
                     {props.type}
                 </Text>

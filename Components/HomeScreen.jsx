@@ -6,12 +6,12 @@ import { Icon } from 'react-native-elements'
 import { useState } from 'react'
 
 export default function HomeScreen({navigation}) {
-  const [searchIcon, setSearchIcon] = useState(false)
 
   const movieCard = search.Search.map(item => {
     return (
       <MovieCard
       key={item.imdbID}
+      id={item.imdbID}
       title={item.Title}
       poster={item.Poster}
       releaseDate={item.Year}
@@ -28,23 +28,11 @@ export default function HomeScreen({navigation}) {
         </Text>
         <TouchableOpacity
         style={styles.searchIcon}
-        onPress={() => setSearchIcon(true)}
+        onPress={() => navigation.navigate('search')}
         >
           <Icon name="search" />
         </TouchableOpacity>
       </View>
-      {
-        searchIcon && (
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search for movie"
-            onSubmitEditing={() => {
-              console.log('Search for movie...')
-              setSearchIcon(false)
-            }}
-          />
-        )
-      }
       <ScrollView>
         <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
           {movieCard}
