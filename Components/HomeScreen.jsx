@@ -1,12 +1,13 @@
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, DrawerLayoutAndroid } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import MovieCard from './MovieCard'
 import { Icon } from 'react-native-elements'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { REACT_APP_API_KEY_2 } from './apiKeys'
 
 export default function HomeScreen({navigation}) {
   const [loadMovies, setLoadMovies] = useState([])
+  const drawer = useRef(null);
   let moviesData = []
 
   useEffect(() => {
@@ -32,25 +33,47 @@ export default function HomeScreen({navigation}) {
     }
   }
 
+  const navigationView = () => (
+    <View style={[styles.container, styles.navigationContainer]}>
+      <Text style={styles.paragraph}>I'm in the Drawer!</Text>
+      <TouchableOpacity
+      onPress={() => drawer.current.closeDrawer()}
+      >
+        <Text>Close Drawer</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <View style={styles.header}>
-        <Text style={styles.title}>
-          Home
-        </Text>
-        <TouchableOpacity
-        style={styles.searchIcon}
-        onPress={() => navigation.navigate('search')}
-        >
-          <Icon name="search" />
-        </TouchableOpacity>
-      </View>
-      {loadMovies.length>0 ? <FlatList
-      data={loadMovies}
-      renderItem={moviesData}
-      numColumns={2}
-      />: <></>}
-    </SafeAreaView>
+    
+      <SafeAreaView style={{flex: 1}}>
+        <View style={styles.header}>
+          <TouchableOpacity
+          // onPress={()=> drawer.current.openDrawer()}
+          style={styles.drawerIcon}
+          >
+            <Icon
+            name='bars'
+            type='font-awesome'
+            />
+          </TouchableOpacity>
+          <Text style={styles.title}>
+            Home
+          </Text>
+          <TouchableOpacity
+          style={styles.searchIcon}
+          onPress={() => navigation.navigate('search')}
+          >
+            <Icon name="search" />
+          </TouchableOpacity>
+        </View>
+        {loadMovies.length>0 ? <FlatList
+        data={loadMovies}
+        renderItem={moviesData}
+        numColumns={2}
+        />: <></>}
+      </SafeAreaView>
+    
   )
 }
 
@@ -102,5 +125,18 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     margin: 5,
     paddingLeft: 10,
+  },
+  navigationContainer: {
+    backgroundColor: "#ecf0f1"
+  },
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 16
+  },
+  drawerIcon: {
+    position: 'absolute',
+    left: 10,
   },
 })

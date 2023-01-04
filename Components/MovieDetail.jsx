@@ -4,9 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { Icon } from 'react-native-elements'
 import { useRoute } from '@react-navigation/native'
 import { useState, useEffect } from 'react'
-import { REACT_APP_API_KEY } from './apiKeys'
-// import { REACT_APP_API_KEY_2 } from './apiKeys'
-// import Video from 'react-native-video';
+// import { REACT_APP_API_KEY } from './apiKeys'
 
 
 const MovieDetail = ({navigation}) => {
@@ -18,7 +16,7 @@ const MovieDetail = ({navigation}) => {
 
   useEffect(()=> {
     if (route.params.id){
-      fetch(`http://www.omdbapi.com/?i=${route.params.id}&plot=full&apikey=${REACT_APP_API_KEY}`)
+      fetch(`http://www.omdbapi.com/?i=${route.params.id}&plot=full&apikey='a664ba2a`)
       .then(res => res.json())
       .then(data => setDataReq(data))
       .catch(err => console.log(err))
