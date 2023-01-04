@@ -4,6 +4,7 @@ import MovieCard from './MovieCard'
 import { Icon } from 'react-native-elements'
 import { useState, useEffect, useRef } from 'react'
 import { REACT_APP_API_KEY_2 } from './apiKeys'
+// import MovieDetailObject from './apiCall'
 
 export default function HomeScreen({navigation}) {
   const [loadMovies, setLoadMovies] = useState([])
@@ -16,6 +17,10 @@ export default function HomeScreen({navigation}) {
       .then(data => setLoadMovies(()=> data.items))
       .catch(err => console.log(err))
   }, [])
+  // useEffect(() => {
+  //     MovieDetailObject()
+  //     .then(data => setLoadMovies(()=> data.items))
+  // }, [])
   
   if (loadMovies.length>0){
     moviesData = (item) => {
