@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import React from 'react'
 import MovieCard from './MovieCard'
 import { Icon } from 'react-native-elements'
-import { REACT_APP_API_KEY } from './apiKeys'
+import { REACT_APP_API_KEY} from './apiKeys'
 
 const SearchScreen = ({navigation}) => {
     const [movieTitle, setMovieTitle] = useState('')
@@ -14,6 +14,7 @@ const SearchScreen = ({navigation}) => {
 
     // const API_KEY  = process.env.REACT_APP_API_KEY
     useEffect(() => {
+        // https://imdb-api.com/en/API/SearchMovie/k_nhhifrqr/avatar
         if (movieTitle) {
             const movieTitleArray = `t=${movieTitle.split(' ').join('+')}&`
             fetch(`http://www.omdbapi.com/?${movieTitleArray}${year?? 'y='+year}&apikey=${REACT_APP_API_KEY}`)

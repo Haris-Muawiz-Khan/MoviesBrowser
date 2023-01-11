@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image, ActivityIndicator } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Icon } from 'react-native-elements'
@@ -9,8 +9,8 @@ import { REACT_APP_API_KEY } from './apiKeys'
 
 const MovieDetail = ({navigation}) => {
   const route = useRoute()
+  const [loading, setLoading] = useState(true)
   const [dataReq, setDataReq] = useState([])
-  const [trailerUrl, setTrailerUrl] = useState('')
   let ratings = []
   let dataHandler = route.params.id ? dataReq : route.params
 
@@ -18,13 +18,13 @@ const MovieDetail = ({navigation}) => {
     if (route.params.id){
       fetch(`http://www.omdbapi.com/?i=${route.params.id}&plot=full&apikey=${REACT_APP_API_KEY}`)
       .then(res => res.json())
-      .then(data => setDataReq(data))
+      .then(data => {
+        setDataReq(data)
+        setLoading(prevState => !prevState)
+      })
       .catch(err => console.log(err))
     }
-    // fetch(`https://imdb-api.com/en/API/Trailer/${REACT_APP_API_KEY_2}/${route.params.id ? route.params.id : dataReq.imdbID}`)
-    // .then(res => res.json())
-    // .then(data => setTrailerUrl(data.link))
-    // .catch(err => console.log(err))
+
   }, [route.params])
 
   if (route.params.id){
@@ -78,23 +78,17 @@ const MovieDetail = ({navigation}) => {
       </View>
 
       <ScrollView style={styles.movieDetailContainer}>
-        <View style={styles.posterImage}>
-          <Image
-              style={styles.poster}
-              source={{
-              uri: dataHandler.Poster,
-              }}
-            />
-            {/* console.log(trailerUrl)
-            <Video source={{uri: trailerUrl}}   // Can be a URL or a local file.
-              ref={(ref) => {
-                player = ref
-              }}                                      // Store reference
-              onBuffer={onBuffer}                // Callback when remote video is buffering
-              onError={videoError}               // Callback when video cannot be loaded
-              style={backgroundVideo}
-            /> */}
-        </View>
+          {
+            loading ? <ActivityIndicator /> : (
+            <View style={styles.posterImage}>    
+                <Image
+                    style={styles.poster}
+                    source={{
+                    uri: dataHandler.Poster,
+                    }}
+                  />
+            </View>)
+          }
         <View>
           <Text style={styles.movieTitle}>
             {dataHandler.Title}

@@ -1,10 +1,9 @@
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, DrawerLayoutAndroid } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import MovieCard from './MovieCard'
 import { Icon } from 'react-native-elements'
 import { useState, useEffect, useRef } from 'react'
 import { REACT_APP_API_KEY_2 } from './apiKeys'
-// import MovieDetailObject from './apiCall'
 
 export default function HomeScreen({navigation}) {
   const [loadMovies, setLoadMovies] = useState([])
@@ -12,15 +11,11 @@ export default function HomeScreen({navigation}) {
   let moviesData = []
 
   useEffect(() => {
-    fetch(`https://imdb-api.com/en/API/MostPopularMovies/${REACT_APP_API_KEY_2}`)
-      .then(res => res.json())
-      .then(data => setLoadMovies(()=> data.items))
-      .catch(err => console.log(err))
-  }, [])
-  // useEffect(() => {
-  //     MovieDetailObject()
-  //     .then(data => setLoadMovies(()=> data.items))
-  // }, [])
+   fetch(`https://imdb-api.com/en/API/MostPopularMovies/${REACT_APP_API_KEY_2}`)
+     .then(res => res.json())
+     .then(data => setLoadMovies(()=> data.items))
+     .catch(err => console.log(err))
+ }, [])
   
   if (loadMovies.length>0){
     moviesData = (item) => {
@@ -38,30 +33,9 @@ export default function HomeScreen({navigation}) {
     }
   }
 
-  const navigationView = () => (
-    <View style={[styles.container, styles.navigationContainer]}>
-      <Text style={styles.paragraph}>I'm in the Drawer!</Text>
-      <TouchableOpacity
-      onPress={() => drawer.current.closeDrawer()}
-      >
-        <Text>Close Drawer</Text>
-      </TouchableOpacity>
-    </View>
-  );
-
   return (
-    
       <SafeAreaView style={{flex: 1}}>
         <View style={styles.header}>
-          <TouchableOpacity
-          // onPress={()=> drawer.current.openDrawer()}
-          style={styles.drawerIcon}
-          >
-            <Icon
-            name='bars'
-            type='font-awesome'
-            />
-          </TouchableOpacity>
           <Text style={styles.title}>
             Home
           </Text>
